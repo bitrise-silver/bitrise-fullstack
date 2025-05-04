@@ -1,0 +1,36 @@
+# Frontend
+frontend:
+  replicaCount: 1
+  revisionHistoryLimit: 1
+  image:
+    name: docker.io/silvercast-bitrise/helloworld-frontend:latest
+    pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  service:
+    name: helloworld-frontend
+    type: NodePort
+    servicePort: 3000
+# Backend
+backend:
+  replicaCount: 1
+  revisionHistoryLimit: 1
+  image:
+    name: docker.io/silvercast-bitrise/helloworld-backend:latest
+    pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  service:
+    name: helloworld-backend
+    type: NodePort
+    servicePort: 8080

@@ -1,0 +1,18 @@
+setup:
+	kind create cluster --name bitrise-kind --config=config/kind.dev.yaml
+
+deploy:
+	rm -rf image.tar
+	podman save -o image.tar localhost/helloworld-frontend:latest
+	kind load --name bitrise-kind image-archive image.tar
+	rm -rf image.tar
+	podman save -o image.tar localhost/helloworld-backend:latest
+	kind load --name bitrise-kind image-archive image.tar
+	rm -rf image.tar
+	helm install -f helm/values.yaml helm helm
+
+clean:
+	cd helm && helm uninstall helm
+
+teardown:
+	kind delete cluster --name bitrise-kind
